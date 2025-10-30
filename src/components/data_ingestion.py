@@ -1,7 +1,7 @@
 import os
 import sys
 from src.exception import CustomException
-from src.logger import logging
+from src.loggers import logging
 import pandas as pd
 
 from sklearn.model_selection import train_test_split
@@ -42,5 +42,5 @@ class DataIngestion:
         
 if __name__=='__main__':
     obj=DataIngestion()
-    obj.initiate_ingestion()
+    train_data,test_data=obj.initiate_ingestion()
 
