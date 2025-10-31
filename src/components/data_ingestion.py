@@ -2,8 +2,11 @@ import os
 import sys
 from src.exception import CustomException
 from src.loggers import logging
-import pandas as pd
 
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
+
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
@@ -43,4 +46,9 @@ class DataIngestion:
 if __name__=='__main__':
     obj=DataIngestion()
     train_data,test_data=obj.initiate_ingestion()
+
+    data_transformer=DataTransformation()
+
+    test_arr,train_arr,_=data_transformer.initiate_data_trans(train_data,test_data)
+    
 
