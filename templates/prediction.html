@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes progressBar {
+            from { width: 0; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        .progress-animate {
+            animation: progressBar 1s ease-out;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.5);
+        }
+        
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white text-xl font-bold">S</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Student Performance Predictor</h1>
+                        <p class="text-sm text-gray-500">AI-powered math score prediction</p>
+                    </div>
+                </div>
+                <a href="/" class="text-gray-600 hover:text-blue-600 transition font-semibold">
+                    ← Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <!-- Hero Section -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-10 text-white">
+                <h2 class="text-3xl font-bold mb-2">Predict Math Performance</h2>
+                <p class="text-blue-100">Enter student information to get an AI-powered prediction of their math score</p>
+            </div>
+
+            <!-- Form -->
+            <div id="predictionForm" class="p-8 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Gender -->
+                    <div>
+                        <label for="gender" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Gender <span class="text-red-500">*</span>
+                        </label>
+                        <select id="gender" name="gender" required class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                            <option value="">Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+
+                    <!-- Race/Ethnicity -->
+                    <div>
+                        <label for="race_ethnicity" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Race/Ethnicity <span class="text-red-500">*</span>
+                        </label>
+                        <select id="race_ethnicity" name="race_ethnicity" required class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                            <option value="">Select group</option>
+                            <option value="group A">Group A</option>
+                            <option value="group B">Group B</option>
+                            <option value="group C">Group C</option>
+                            <option value="group D">Group D</option>
+                            <option value="group E">Group E</option>
+                        </select>
+                    </div>
+
+                    <!-- Parental Education -->
+                    <div>
+                        <label for="parental_level_of_education" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Parental Level of Education <span class="text-red-500">*</span>
+                        </label>
+                        <select id="parental_level_of_education" name="parental_level_of_education" required class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                            <option value="">Select education level</option>
+                            <option value="some high school">Some high school</option>
+                            <option value="high school">High school</option>
+                            <option value="some college">Some college</option>
+                            <option value="associate's degree">Associate's degree</option>
+                            <option value="bachelor's degree">Bachelor's degree</option>
+                            <option value="master's degree">Master's degree</option>
+                        </select>
+                    </div>
+
+                    <!-- Lunch -->
+                    <div>
+                        <label for="lunch" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Lunch Type <span class="text-red-500">*</span>
+                        </label>
+                        <select id="lunch" name="lunch" required class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                            <option value="">Select lunch type</option>
+                            <option value="standard">Standard</option>
+                            <option value="free/reduced">Free/Reduced</option>
+                        </select>
+                    </div>
+
+                    <!-- Test Preparation -->
+                    <div>
+                        <label for="test_preparation_course" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Test Preparation Course <span class="text-red-500">*</span>
+                        </label>
+                        <select id="test_preparation_course" name="test_preparation_course" required class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                            <option value="">Select status</option>
+                            <option value="none">None</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+
+                    <!-- Reading Score -->
+                    <div>
+                        <label for="reading_score" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Reading Score <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" id="reading_score" name="reading_score" min="0" max="100" required class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Enter score (0-100)">
+                        <p class="text-xs text-gray-500 mt-1">Current value: <span id="reading_value" class="font-semibold">-</span></p>
+                    </div>
+
+                    <!-- Writing Score -->
+                    <div>
+                        <label for="writing_score" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Writing Score <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" id="writing_score" name="writing_score" min="0" max="100" required class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Enter score (0-100)">
+                        <p class="text-xs text-gray-500 mt-1">Current value: <span id="writing_value" class="font-semibold">-</span></p>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button type="button" id="predictBtn" onclick="predictScore()" disabled class="btn-primary w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
+                        Predict Math Score
+                    </button>
+                </div>
+
+                <!-- Form Progress Indicator -->
+                <div id="formProgress" class="mt-4">
+                    <div class="flex justify-between text-sm text-gray-600 mb-2">
+                        <span>Form Completion</span>
+                        <span id="progressText" class="font-semibold">0/7 fields</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div id="progressBar" class="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="hidden border-t border-gray-200 bg-gray-50 p-8">
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                        <svg class="animate-spin h-8 w-8 text-blue-600" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Analyzing Student Data...</h3>
+                    <p class="text-gray-600">Our AI is processing the information</p>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div id="results" class="hidden border-t border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50 p-8">
+                <div class="text-center animate-fadeIn">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Predicted Math Score</h3>
+                    <div class="inline-flex items-center justify-center w-32 h-32 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full shadow-xl mb-4">
+                        <span id="scoreDisplay" class="text-5xl font-bold text-white">0</span>
+                    </div>
+                    <p class="text-gray-600 mt-2">
+                        Based on the provided information, the predicted math score is
+                        <span id="scoreText" class="font-bold text-gray-900">0 out of 100</span>
+                    </p>
+                    <div class="mt-6 flex justify-center">
+                        <div class="w-full max-w-md bg-white rounded-lg p-4 shadow">
+                            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                <span>Performance Level</span>
+                                <span id="performanceLevel" class="font-semibold"></span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div id="resultProgressBar" class="bg-gradient-to-r from-green-500 to-emerald-600 h-3 rounded-full progress-animate" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="mt-8 flex justify-center space-x-4">
+                        <button onclick="resetForm()" class="bg-white text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition shadow-md border border-gray-200">
+                            Predict Another
+                        </button>
+                        <a href="/" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition shadow-md">
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="mt-8 text-center text-sm text-gray-500">
+            <p>This prediction system uses machine learning to estimate student performance based on various factors.</p>
+        </div>
+    </main>
+
+    <script>
+        // Form validation and progress tracking
+        const formFields = [
+            'gender',
+            'race_ethnicity',
+            'parental_level_of_education',
+            'lunch',
+            'test_preparation_course',
+            'reading_score',
+            'writing_score'
+        ];
+
+        function updateFormProgress() {
+            let filledFields = 0;
+            formFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field && field.value) {
+                    filledFields++;
+                }
+            });
+
+            const progress = (filledFields / formFields.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = filledFields + '/' + formFields.length + ' fields';
+            
+            // Enable/disable button
+            const predictBtn = document.getElementById('predictBtn');
+            predictBtn.disabled = filledFields !== formFields.length;
+        }
+
+        // Update score displays
+        document.getElementById('reading_score').addEventListener('input', function(e) {
+            document.getElementById('reading_value').textContent = e.target.value || '-';
+            updateFormProgress();
+        });
+
+        document.getElementById('writing_score').addEventListener('input', function(e) {
+            document.getElementById('writing_value').textContent = e.target.value || '-';
+            updateFormProgress();
+        });
+
+        // Add event listeners to all form fields
+        formFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.addEventListener('change', updateFormProgress);
+                field.addEventListener('input', updateFormProgress);
+            }
+        });
+
+        // Validate form
+        function validateForm() {
+            const formData = {};
+            let isValid = true;
+
+            formFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value) {
+                    isValid = false;
+                    field.classList.add('border-red-500');
+                } else {
+                    field.classList.remove('border-red-500');
+                    formData[fieldId] = field.value;
+                }
+            });
+
+            // Validate score ranges
+            const readingScore = parseFloat(formData.reading_score);
+            const writingScore = parseFloat(formData.writing_score);
+
+            if (readingScore < 0 || readingScore > 100) {
+                alert('Reading score must be between 0 and 100');
+                return null;
+            }
+
+            if (writingScore < 0 || writingScore > 100) {
+                alert('Writing score must be between 0 and 100');
+                return null;
+            }
+
+            return isValid ? formData : null;
+        }
+
+        // Predict score function
+        async function predictScore() {
+            const formData = validateForm();
+            
+            if (!formData) {
+                alert('Please fill in all fields correctly');
+                return;
+            }
+
+            // Show loading state
+            document.getElementById('predictionForm').style.display = 'none';
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('results').classList.add('hidden');
+
+            try {
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                // Simulate loading delay for better UX
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                if (result.success) {
+                    displayResult(result.predicted_score);
+                } else {
+                    throw new Error(result.error || 'Prediction failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error: ' + error.message + '\n\nPlease make sure the Flask server is running.');
+                
+                // Reset UI
+                document.getElementById('predictionForm').style.display = 'block';
+                document.getElementById('loadingState').classList.add('hidden');
+            }
+        }
+
+        // Display result
+        function displayResult(score) {
+            const finalScore = Math.round(score);
+            
+            // Hide loading, show results
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            
+            // Update score display
+            document.getElementById('scoreDisplay').textContent = finalScore;
+            document.getElementById('scoreText').textContent = finalScore + ' out of 100';
+            document.getElementById('resultProgressBar').style.width = finalScore + '%';
+
+            // Determine performance level
+            let level = 'Needs Improvement';
+            let levelColor = 'text-red-600';
+            
+            if (finalScore >= 80) {
+                level = 'Excellent';
+                levelColor = 'text-green-600';
+            } else if (finalScore >= 60) {
+                level = 'Good';
+                levelColor = 'text-blue-600';
+            } else if (finalScore >= 40) {
+                level = 'Average';
+                levelColor = 'text-yellow-600';
+            }
+
+            const levelElement = document.getElementById('performanceLevel');
+            levelElement.textContent = level;
+            levelElement.className = 'font-semibold ' + levelColor;
+
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'nearest' 
+            });
+        }
+
+        // Reset form
+        function resetForm() {
+            // Clear all form fields
+            formFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.value = '';
+                }
+            });
+
+            // Reset displays
+            document.getElementById('reading_value').textContent = '-';
+            document.getElementById('writing_value').textContent = '-';
+            
+            // Reset UI
+            document.getElementById('predictionForm').style.display = 'block';
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('results').classList.add('hidden');
+            
+            // Update progress
+            updateFormProgress();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateFormProgress();
+            console.log('Student Performance Predictor initialized');
+        });
+    </script>
+</body>
+</html>
